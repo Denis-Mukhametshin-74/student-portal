@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет студента</title>
+    <title>Профиль студента</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <header>
-        <h1>Профиль студента</h1>
+        <h1 id="profileTitle">Профиль студента</h1>
 
         <div class="menu">
             <a href="index.html" class="menu-button">Расписание</a>
@@ -20,43 +20,17 @@
     <main>
         <h2>Основная информация</h2>
         
-        <div class="profile-info">
-            <p><strong>ФИО:</strong> Иванов Иван Иванович</p>
-            <p><strong>Группа:</strong> ФТ-101</p>
-            <p><strong>Email:</strong> ivanov@urfu.ru</p>
+        <div class="profile-info" id="profileInfo">
+            <div class="loading">
+                <p>Загрузка профиля...</p>
+            </div>
         </div>
 
         <h2>Текущие предметы</h2>
         
-        <div class="subject-cards">
-            <div class="subject-card">
-                <h3>Программирование</h3>
-                <p><strong>Преподаватель:</strong> Иванов И.И.</p>
-            </div>
-            
-            <div class="subject-card">
-                <h3>Математика</h3>
-                <p><strong>Преподаватель:</strong> Петрова А.С.</p>
-            </div>
-            
-            <div class="subject-card">
-                <h3>Физика</h3>
-                <p><strong>Преподаватель:</strong> Сидоров В.П.</p>
-            </div>
-            
-            <div class="subject-card">
-                <h3>Английский язык</h3>
-                <p><strong>Преподаватель:</strong> Козлова Е.В.</p>
-            </div>
-            
-            <div class="subject-card">
-                <h3>История</h3>
-                <p><strong>Преподаватель:</strong> Николаев П.Д.</p>
-            </div>
-            
-            <div class="subject-card">
-                <h3>Физкультура</h3>
-                <p><strong>Преподаватель:</strong> Смирнов А.В.</p>
+        <div class="subject-cards" id="subjectsContainer">
+            <div class="loading">
+                <p>Загрузка предметов...</p>
             </div>
         </div>
     </main>

@@ -1,39 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
-    checkAuth();
+document.addEventListener('DOMContentLoaded', async function() {
+    await checkAuth();
 });
 
-function checkAuth() {
-    const user = localStorage.getItem('user');
+async function checkAuth() {
+    const token = localStorage.getItem('token');
     const currentPage = window.location.pathname.split('/').pop();
     
-    if (currentPage === 'login.html' && user) {
+    if (currentPage === 'login.html' && token) {
         window.location.href = 'index.html';
+        return;
     }
     
-    if (currentPage !== 'login.html' && !user) {
+    if (currentPage !== 'login.html' && !token) {
         window.location.href = 'login.html';
+        return;
     }
-}
-
-function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    if (email && password) {
-        const user = {
-            name: "Иванов Иван Иванович",
-            email: email,
-            group: "ФТ-101"
-        };
-        
-        localStorage.setItem('user', JSON.stringify(user));
-        window.location.href = 'index.html';
-    } else {
-        alert("Введите email и пароль");
-    }
-}
-
-function logout() {
-    localStorage.removeItem('user');
-    window.location.href = 'login.html';
 }

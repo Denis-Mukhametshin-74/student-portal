@@ -176,7 +176,10 @@ main h2 {
         gap: 5px;
     }
     
-    .time, .subject, .room, .teacher {
+    .time,
+    .subject,
+    .room,
+    .teacher {
         width: 100%;
     }
     
