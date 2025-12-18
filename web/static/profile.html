@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль студента</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1 id="profileTitle">Профиль студента</h1>
+
+        <div class="menu">
+            <a href="index.html" class="menu-button">Расписание</a>
+            <a href="profile.html" class="menu-button">Профиль</a>
+            <a href="#" class="logout-button">Выйти</a>
+        </div>
+    </header>
+
+    <main>
+        <h2>Основная информация</h2>
+        
+        <div class="profile-info" id="profileInfo">
+            <div class="loading">
+                <p>Загрузка профиля...</p>
+            </div>
+        </div>
+
+        <h2>Текущие предметы</h2>
+        
+        <div class="subject-cards" id="subjectsContainer">
+            <div class="loading">
+                <p>Загрузка предметов...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
