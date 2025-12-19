@@ -18,8 +18,8 @@ func (r *SubjectRepository) FindByStudentID(studentID int) ([]model.Subject, err
 	query := `
         SELECT s.id, s.name, s.teacher
         FROM subjects s
-        JOIN student_subjects ss ON s.id = ss.subject_id
-        WHERE ss.student_id = $1
+        JOIN profiles ps ON s.id = ps.subject_id
+        WHERE ps.student_id = $1
         ORDER BY s.name
     `
 

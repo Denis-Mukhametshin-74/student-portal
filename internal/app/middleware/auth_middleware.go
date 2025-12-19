@@ -10,8 +10,8 @@ import (
 type contextKey string
 
 const (
-	studentIDKey contextKey = "studentID"
-	emailKey     contextKey = "email"
+	StudentIDKey contextKey = "studentID"
+	EmailKey     contextKey = "email"
 )
 
 func AuthMiddleware(next http.Handler) http.Handler {
@@ -37,8 +37,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		ctx := r.Context()
-		ctx = context.WithValue(ctx, studentIDKey, claims.StudentID)
-		ctx = context.WithValue(ctx, emailKey, claims.Email)
+		ctx = context.WithValue(ctx, StudentIDKey, claims.StudentID)
+		ctx = context.WithValue(ctx, EmailKey, claims.Email)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

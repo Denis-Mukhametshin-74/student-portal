@@ -36,7 +36,10 @@ func (s *ScheduleService) GetSchedule(email string) (*dto.ScheduleResponse, erro
 	}
 
 	if schedules == nil {
-		return nil, errors.New("расписание не найдено")
+		return &dto.ScheduleResponse{
+			Group: groupName,
+			Days:  nil,
+		}, nil
 	}
 
 	scheduleMap := make(map[string][]dto.ScheduleItem)

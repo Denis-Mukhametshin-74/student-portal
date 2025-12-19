@@ -28,20 +28,23 @@ func (s *ProfileService) GetProfile(email string) (*dto.ProfileResponse, error) 
 		return nil, errors.New("пользователь не найден")
 	}
 
+	studentResponse := dto.StudentResponse{
+		ID:    student.ID,
+		Name:  student.Name,
+		Email: student.Email,
+		Group: student.GroupName,
+	}
+
 	subjects, err := s.subjectRepo.FindByStudentID(student.ID)
 	if err != nil {
 		return nil, err
 	}
 
 	if subjects == nil {
-		return nil, errors.New("предметы не найдены")
-	}
-
-	studentResponse := dto.StudentResponse{
-		ID:    student.ID,
-		Name:  student.Name,
-		Email: student.Email,
-		Group: student.GroupName,
+		return &dto.ProfileResponse{
+			Student:  studentResponse,
+			Subjects: nil,
+		}, nil
 	}
 
 	var subjectsResponse []dto.SubjectResponse

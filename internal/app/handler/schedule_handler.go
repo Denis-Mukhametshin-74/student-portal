@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"student-portal/internal/app/middleware"
 	"student-portal/internal/app/service"
 )
 
@@ -17,7 +18,7 @@ func NewScheduleHandler(scheduleService *service.ScheduleService) *ScheduleHandl
 
 func (h *ScheduleHandler) GetSchedule(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	email, ok := ctx.Value("email").(string)
+	email, ok := ctx.Value(middleware.EmailKey).(string)
 	if !ok || email == "" {
 		http.Error(w, "не удалось получить данные пользователя", http.StatusUnauthorized)
 		return
