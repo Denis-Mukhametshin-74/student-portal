@@ -1,15 +1,19 @@
-import { login, register, logout } from "./auth.js";
+import { loginWithGoogle, login, register, logout } from "./auth.js";
 
 document.addEventListener('DOMContentLoaded', async function() {
     const loginBtn = document.querySelector('.login-button');
     const registerBtn = document.querySelector('.register-button');
     const logoutBtn = document.querySelector('.logout-button');
 
+    const googleLoginBtn = document.getElementById('googleLogin');
+    if (googleLoginBtn) googleLoginBtn.addEventListener('click', loginWithGoogle);
+
     if (loginBtn) loginBtn.addEventListener('click', login);
     if (registerBtn) registerBtn.addEventListener('click', register);
     if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
     await checkAuth();
+    await checkOAuthTokenInHash();
 
     if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
         await loadSchedule();
@@ -31,6 +35,36 @@ async function checkAuth() {
     if (currentPage !== 'login.html' && currentPage !== 'register.html' && !token) {
         window.location.href = 'login.html';
         return;
+    }
+}
+
+async function checkOAuthTokenInHash() {
+    const hash = window.location.hash.substring(1);
+    if (!hash) return;
+    
+    const params = new URLSearchParams(hash);
+    const encodedToken = params.get('token');
+    
+    if (encodedToken) {
+        try {
+            const tokenData = JSON.parse(atob(encodedToken));
+            
+            localStorage.setItem('token', tokenData.token);
+            localStorage.setItem('student', JSON.stringify(tokenData.student));
+            
+            window.location.hash = '';
+            window.location.href = 'index.html';
+            
+        } catch (error) {
+            console.error('Error parsing OAuth token:', error);
+            alert('Ошибка обработки токена авторизации');
+        }
+    }
+    
+    const error = params.get('error');
+    if (error) {
+        alert('Ошибка авторизации: ' + decodeURIComponent(error));
+        window.location.hash = '';
     }
 }
 
