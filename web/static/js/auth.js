@@ -22,7 +22,7 @@ export async function login() {
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('student', JSON.stringify(data.student));
             window.location.href = 'index.html';
         } else {
             alert("Ошибка авторизации. Проверьте email и пароль.");
@@ -79,6 +79,6 @@ export async function register() {
 
 export function logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('student');
     window.location.href = 'login.html';
 }
