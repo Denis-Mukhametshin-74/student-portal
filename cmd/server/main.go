@@ -8,6 +8,7 @@ import (
 	"student-portal/internal/app/middleware"
 	"student-portal/internal/app/repository"
 	"student-portal/internal/app/service"
+	"student-portal/pkg/cache"
 	"student-portal/pkg/database"
 	"student-portal/pkg/jwt"
 	"time"
@@ -47,14 +48,16 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
+	memoryCache := cache.NewMemoryCache()
+
 	scheduleRepo := repository.NewScheduleRepository(database.DB)
 	studentRepo := repository.NewStudentRepository(database.DB)
 	subjectRepo := repository.NewSubjectRepository(database.DB)
 	oauthRepo := repository.NewOAuthRepository(database.DB)
 
 	authService := service.NewAuthService(studentRepo, oauthRepo)
-	profileService := service.NewProfileService(studentRepo, subjectRepo)
-	scheduleService := service.NewScheduleService(scheduleRepo, studentRepo)
+	profileService := service.NewProfileService(studentRepo, subjectRepo, memoryCache)
+	scheduleService := service.NewScheduleService(scheduleRepo, studentRepo, memoryCache)
 
 	authHandler := handler.NewAuthHandler(authService)
 	profileHandler := handler.NewProfileHandler(profileService)
