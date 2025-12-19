@@ -16,8 +16,7 @@ func NewScheduleRepository(db *sql.DB) *ScheduleRepository {
 
 func (r *ScheduleRepository) FindByGroup(groupName string) ([]model.Schedule, error) {
 	query := `
-        SELECT id, group_name, day_of_week, start_time, end_time, 
-               subject, room, teacher, created_at
+        SELECT id, group_name, day_of_week, start_time, end_time, subject, room, teacher, created_at
         FROM schedules 
         WHERE group_name = $1 
         ORDER BY 
