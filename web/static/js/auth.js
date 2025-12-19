@@ -1,3 +1,7 @@
+export async function loginWithGoogle() {
+    window.location.href = '/api/auth/google';
+}
+
 export async function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
