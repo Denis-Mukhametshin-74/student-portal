@@ -14,6 +14,28 @@ func NewStudentRepository(db *sql.DB) *StudentRepository {
 	return &StudentRepository{db: db}
 }
 
+func (r *StudentRepository) FindByID(id int) (*model.Student, error) {
+	query := `
+        SELECT id, name, email, group_name, password_hash, created_at, updated_at 
+        FROM students WHERE id = $1
+    `
+
+	var student model.Student
+	err := r.db.QueryRow(query, id).Scan(
+		&student.ID, &student.Name, &student.Email, &student.GroupName,
+		&student.PasswordHash, &student.CreatedAt, &student.UpdatedAt,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("ошибка поиска пользователя по ID: %w", err)
+	}
+
+	return &student, nil
+}
+
 func (r *StudentRepository) FindByEmail(email string) (*model.Student, error) {
 	query := `
         SELECT id, name, email, group_name, password_hash, created_at, updated_at 

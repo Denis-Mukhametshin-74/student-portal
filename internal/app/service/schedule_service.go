@@ -5,18 +5,22 @@ import (
 	"fmt"
 	"student-portal/internal/app/dto"
 	"student-portal/internal/app/repository"
+	"student-portal/pkg/cache"
+	"time"
 )
 
 type ScheduleService struct {
 	scheduleRepo *repository.ScheduleRepository
 	studentRepo  *repository.StudentRepository
+	cache        *cache.MemoryCache
 }
 
 func NewScheduleService(scheduleRepo *repository.ScheduleRepository,
-	studentRepo *repository.StudentRepository) *ScheduleService {
+	studentRepo *repository.StudentRepository, cache *cache.MemoryCache) *ScheduleService {
 	return &ScheduleService{
 		scheduleRepo: scheduleRepo,
 		studentRepo:  studentRepo,
+		cache:        cache,
 	}
 }
 
@@ -30,6 +34,12 @@ func (s *ScheduleService) GetSchedule(email string) (*dto.ScheduleResponse, erro
 	}
 
 	groupName := student.GroupName
+	cacheKey := fmt.Sprintf("schedule:%s", groupName)
+
+	if cached, found := s.cache.Get(cacheKey); found {
+		return cached.(*dto.ScheduleResponse), nil
+	}
+
 	schedules, err := s.scheduleRepo.FindByGroup(groupName)
 	if err != nil {
 		return nil, err
@@ -77,8 +87,12 @@ func (s *ScheduleService) GetSchedule(email string) (*dto.ScheduleResponse, erro
 		}
 	}
 
-	return &dto.ScheduleResponse{
+	scheduleResponse := &dto.ScheduleResponse{
 		Group: groupName,
 		Days:  days,
-	}, nil
+	}
+
+	s.cache.Set(cacheKey, scheduleResponse, 30*time.Minute)
+
+	return scheduleResponse, nil
 }
