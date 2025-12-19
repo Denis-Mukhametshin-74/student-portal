@@ -128,10 +128,10 @@ function renderSchedule(scheduleData) {
     const title = document.getElementById('pageTitle');
     const container = document.getElementById('scheduleContainer');
     
-    if (title && scheduleData.group) {
-        title.textContent = `Расписание группы ${scheduleData.group}`;
-    } else if (title) {
+    if ((title && scheduleData.group == "Не указана") || (title && !scheduleData.group)) {
         title.innerHTML = '<p>Нет данных о группе</p>';
+    } else if (title && scheduleData.group) {
+        title.textContent = `Расписание группы ${scheduleData.group}`;
     }
     
     if (container && scheduleData.days) {
