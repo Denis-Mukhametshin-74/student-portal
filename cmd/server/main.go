@@ -50,8 +50,9 @@ func main() {
 	scheduleRepo := repository.NewScheduleRepository(database.DB)
 	studentRepo := repository.NewStudentRepository(database.DB)
 	subjectRepo := repository.NewSubjectRepository(database.DB)
+	oauthRepo := repository.NewOAuthRepository(database.DB)
 
-	authService := service.NewAuthService(studentRepo)
+	authService := service.NewAuthService(studentRepo, oauthRepo)
 	profileService := service.NewProfileService(studentRepo, subjectRepo)
 	scheduleService := service.NewScheduleService(scheduleRepo, studentRepo)
 
@@ -66,6 +67,9 @@ func main() {
 
 	mux.HandleFunc("POST /api/auth/login", authHandler.Login)
 	mux.HandleFunc("POST /api/auth/register", authHandler.Register)
+
+	mux.HandleFunc("GET /api/auth/google", authHandler.OAuthGoogle)
+	mux.HandleFunc("GET /api/auth/google/callback", authHandler.OAuthGoogleCallback)
 
 	mux.Handle("GET /api/profile", middleware.AuthMiddleware(
 		http.HandlerFunc(profileHandler.GetProfile)))
